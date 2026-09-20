@@ -878,7 +878,7 @@ async def server_loop(ctx: CommonContext, address: typing.Optional[str] = None) 
         ctx._messagebox_connection_loss.dismiss()
         ctx._messagebox_connection_loss = None
 
-    address = f"ws://{address}" if "://" not in address \
+    address = f"wss://{address}" if "://" not in address \
         else address.replace("archipelago://", "ws://")
 
     server_url = urllib.parse.urlparse(address)
@@ -892,7 +892,7 @@ async def server_loop(ctx: CommonContext, address: typing.Optional[str] = None) 
 
     logger.info(f'Connecting to Archipelago server at {address}')
     try:
-        port = server_url.port or 38281  # raises ValueError if invalid
+        port = server_url.port or 443  # raises ValueError if invalid
         socket = await websockets.connect(address, port=port, ping_timeout=None, ping_interval=None,
                                           ssl=get_ssl_context() if address.startswith("wss://") else None,
                                           max_size=ctx.max_size)
